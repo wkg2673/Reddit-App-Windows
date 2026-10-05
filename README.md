@@ -6,17 +6,15 @@ Electron, so it ships its own Chromium and never touches Edge or WebView2.
 
 ![toolbar](docs/toolbar.png)
 
-## What you get
+## Features
 
-- **Reddit in a real app window.** The page fills the window below a compact toolbar;
-  the window keeps the standard Windows caption buttons, snap layouts and animations.
-- **Stays logged in.** Cookies live in a persistent session partition in your user
-  profile, so you sign in once.
-- **Links behave sensibly.** Anything inside Reddit stays in the app; anything else
-  opens in your default browser.
-- **Remembers your window.** Position, size and maximized state come back next launch.
-- **Installs cleanly.** An NSIS installer with a desktop shortcut, a Start Menu entry,
-  and an entry in *Apps & features* that uninstalls properly.
+- Native Windows window with standard minimize/maximize/close controls
+- Persistent Reddit login
+- Back/forward navigation
+- External-link handling
+- Persistent window size and position
+- Optional DevTools in development builds
+
 
 ## Requirements
 
@@ -24,8 +22,7 @@ Windows 10 or 11, x64. Nothing else: no separate browser runtime is needed.
 
 ## Install
 
-Run `Reddit-1.0.0-Setup.exe` from the `release` folder after building (see
-[Building](#building)).
+Download and Run  `Reddit-Client-v1.0.0-Setup.exe` from the [Releases](https://github.com/wkg2673/Reddit-App-Windows/releases/tag/v1.0.0) page.
 
 Uninstall from *Settings → Apps → Installed apps → Reddit*. Your login and settings
 are kept on purpose, so reinstalling does not sign you out.
