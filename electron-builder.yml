@@ -1,0 +1,53 @@
+appId: com.redditdesktop.app
+productName: Reddit
+copyright: Copyright © 2026 Reddit Desktop Contributors
+
+directories:
+  output: release
+  buildResources: build
+
+# Only the compiled output ships: the shell, the guest, the main process and the
+# preload bundle. No sources, no node_modules, no build tooling.
+files:
+  - dist/**/*
+  - package.json
+  - '!**/*.map'
+
+asar: true
+npmRebuild: false
+buildDependenciesFromSource: false
+removePackageScripts: true
+compression: normal
+electronLanguages:
+  - en-US
+
+win:
+  icon: build/icon.ico
+  executableName: Reddit
+  requestedExecutionLevel: asInvoker
+  artifactName: ${productName}-${version}-Setup.${ext}
+  target:
+    - target: nsis
+      arch:
+        - x64
+
+nsis:
+  # A classic assisted installer: installs per-user, lets the user pick the
+  # folder, and registers an uninstaller in "Apps & features".
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Reddit
+  runAfterFinish: true
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+  # Keep cookies/session so a reinstall stays logged in; the uninstaller still
+  # removes the program files and shortcuts.
+  deleteAppDataOnUninstall: false
+
+portable:
+  artifactName: ${productName}-${version}-Portable.${ext}
