@@ -25,8 +25,7 @@ Windows 10 or 11, x64. Nothing else: no separate browser runtime is needed.
 ## Install
 
 Run `Reddit-1.0.0-Setup.exe` from the `release` folder after building (see
-[Building](#building)), or install the unpacked build by running `Reddit.exe` from
-`release/win-unpacked`.
+[Building](#building)).
 
 Uninstall from *Settings → Apps → Installed apps → Reddit*. Your login and settings
 are kept on purpose, so reinstalling does not sign you out.
@@ -113,3 +112,7 @@ A few decisions worth knowing about:
 ## Licence
 
 This project is not affiliated with or endorsed by Reddit, Inc.
+
+<p align="left">
+  <sub>Made with OpenCode</sub>
+</p>
