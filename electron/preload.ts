@@ -2,11 +2,6 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 import { IPC, type AppInfo, type WindowState } from '../shared/appConfig';
 
-/**
- * The only bridge between the (untrusted-by-design) renderer and the main
- * process. Nothing here exposes `ipcRenderer`, `require`, `process` or any
- * Electron object to page scripts.
- */
 const api = {
   app: {
     info: (): Promise<AppInfo> => ipcRenderer.invoke(IPC.appInfo),

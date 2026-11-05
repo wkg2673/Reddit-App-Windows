@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-/** Bundles the Electron main process and the preload script with esbuild. */
+/** Bundles Electron main process and preload script with esbuild. */
 export async function buildNode({ watch = false } = {}) {
   const { build, context } = await import('esbuild');
 
@@ -16,8 +16,6 @@ export async function buildNode({ watch = false } = {}) {
     platform: 'node',
     target: 'node22',
     format: 'cjs',
-    // Explicit `.cjs`: the preload must be CommonJS for sandboxed preloads,
-    // and the format should not depend on package.json's "type" field.
     outExtension: { '.js': '.cjs' },
     // Electron is provided by the runtime, never bundled.
     external: ['electron'],

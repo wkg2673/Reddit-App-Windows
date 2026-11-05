@@ -1,12 +1,6 @@
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-/**
- * Minimal, dependency-free JSON store.
- *
- * Writes are atomic (temp file + rename) and debounced so that dragging a
- * window does not hammer the disk.
- */
 export class JsonStore<T extends object> {
   private readonly filePath: string;
 
@@ -37,7 +31,6 @@ export class JsonStore<T extends object> {
     }
   }
 
-  /** Applies a patch and schedules a debounced flush. */
   patch(partial: Partial<T>): void {
     const current = this.read() ?? ({} as T);
     const next = { ...current, ...partial } as T;

@@ -1,13 +1,11 @@
 appId: com.redditdesktop.app
 productName: Reddit
-copyright: Copyright © 2026 Reddit Desktop Contributors
+copyright: Copyright © 2026 wkg2673
 
 directories:
   output: release
   buildResources: build
 
-# Only the compiled output ships: the shell, the guest, the main process and the
-# preload bundle. No sources, no node_modules, no build tooling.
 files:
   - dist/**/*
   - package.json
@@ -32,8 +30,6 @@ win:
         - x64
 
 nsis:
-  # A classic assisted installer: installs per-user, lets the user pick the
-  # folder, and registers an uninstaller in "Apps & features".
   oneClick: false
   perMachine: false
   allowElevation: true
@@ -45,8 +41,6 @@ nsis:
   installerIcon: build/icon.ico
   uninstallerIcon: build/icon.ico
   installerHeaderIcon: build/icon.ico
-  # Keep cookies/session so a reinstall stays logged in; the uninstaller still
-  # removes the program files and shortcuts.
   deleteAppDataOnUninstall: false
 
 portable:

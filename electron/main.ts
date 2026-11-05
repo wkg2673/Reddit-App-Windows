@@ -39,15 +39,8 @@ const MIME_TYPES: Record<string, string> = {
 
 const smoke: SmokeOptions | null = parseSmokeOptions(process.argv, process.env);
 
-/**
- * Development mode is opt-in through the environment. `npm run dev` sets it so
- * the shell loads from the Vite dev server; every other path - including
- * `electron .` after a build and the packaged app - uses the production
- * `app://` shell, so the smoke test exercises the real thing.
- */
 const isDev = process.env.REDDIT_DESKTOP_DEV === '1';
 
-/** DevTools are useful while hacking on an unpackaged build, but never shipped. */
 const allowDevTools = isDev || !app.isPackaged;
 
 const openedExternally: string[] = [];
@@ -63,8 +56,6 @@ const opener = new ExternalLinkOpener(async (url) => {
 app.setName(APP_NAME);
 app.setAppUserModelId(APP_ID);
 
-// Allows the automated smoke test to run against a throwaway profile so it
-// never touches a real installation. Has to happen before userData is read.
 const userDataOverride = process.env.REDDIT_DESKTOP_USER_DATA;
 if (userDataOverride) app.setPath('userData', userDataOverride);
 
@@ -127,11 +118,9 @@ let controller: MainWindowController | null = null;
 app.whenReady().then(async () => {
   await registerShellProtocol();
 
-  // The Reddit session: persistent cookies, hardened.
   const redditSession = session.fromPartition(SESSION_PARTITION);
   hardenSession(redditSession);
   guardGuestSession(redditSession, opener);
-  // The shell session: our own UI, every permission denied.
   hardenSession(session.defaultSession);
 
   nativeTheme.on('updated', () => {

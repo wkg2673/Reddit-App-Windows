@@ -1,15 +1,7 @@
 import { classifyUrl } from '../shared/navigation';
 
-/** Dispatched by the owner (the main process) to open a URL externally. */
 export type OpenExternal = (url: string) => Promise<unknown> | unknown;
 
-/**
- * Hands links to the operating system so they open in the user's default
- * browser, exactly once per URL.
- *
- * Several hooks observe the same navigation (`will-navigate`, the window open
- * handler and the request filter), so duplicates are suppressed here.
- */
 export class ExternalLinkOpener {
   private readonly recentlyOpened = new Map<string, number>();
 
@@ -19,7 +11,6 @@ export class ExternalLinkOpener {
     private readonly now: () => number = () => Date.now(),
   ) {}
 
-  /** Returns true when the URL was actually dispatched. */
   async openUrl(rawUrl: string): Promise<boolean> {
     const decision = classifyUrl(rawUrl);
     if (decision.kind !== 'external') return false;

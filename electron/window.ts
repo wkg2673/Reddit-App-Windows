@@ -76,10 +76,6 @@ export class MainWindowController {
     return this.window;
   }
 
-  /**
-   * Facts about the window chrome, used by the smoke test to prove the app has
-   * real Windows caption buttons instead of a custom-drawn title bar.
-   */
   nativeChrome(): NativeChromeFacts | null {
     const window = this.window;
     if (!window || window.isDestroyed()) return null;
@@ -90,18 +86,11 @@ export class MainWindowController {
       overlayEnabled: USE_NATIVE_WINDOW_CONTROLS,
       reservedWidth: CAPTION_OVERLAY_WIDTH,
       overlayHeight: TOOLBAR_HEIGHT,
-      // With a hidden title bar the web content spans the whole window, which
-      // is what lets the OS caption buttons sit on top of our own toolbar.
       contentSpansWindow: content.x === bounds.x && content.width === bounds.width,
       buttonsOnTop: window.isResizable(),
     };
   }
 
-  /**
-   * Resolves the persistent session up-front. Loading it before the first
-   * window means cookies from a previous launch are already in memory when
-   * Reddit boots, so the user never sees a logged-out flash.
-   */
   session(): Session {
     return session.fromPartition(SESSION_PARTITION);
   }
@@ -124,8 +113,6 @@ export class MainWindowController {
       backgroundColor: caption.color,
       title: 'Reddit',
       autoHideMenuBar: true,
-      // The window is frameless; the Windows caption buttons are drawn by the
-      // OS on top of our own toolbar (snap layouts, native animations).
       ...(USE_NATIVE_WINDOW_CONTROLS
         ? {
             titleBarStyle: 'hidden' as const,
@@ -138,14 +125,13 @@ export class MainWindowController {
         : {}),
       webPreferences: {
         preload: this.preloadPath,
-        // The shell renders only our own React UI and never needs Node.
         nodeIntegration: false,
         contextIsolation: true,
         sandbox: true,
         webSecurity: true,
         allowRunningInsecureContent: false,
         experimentalFeatures: false,
-        webviewTag: true, // required to host the Reddit guest
+        webviewTag: true,
         spellcheck: true,
         backgroundThrottling: false,
         devTools: this.allowDevTools,
@@ -208,7 +194,6 @@ export class MainWindowController {
       this.window = null;
     });
 
-    // Shortcuts the guest page would otherwise swallow.
     window.webContents.on('before-input-event', (event, input) => {
       if (input.type !== 'keyDown') return;
       const key = input.key.toLowerCase();

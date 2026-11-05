@@ -1,10 +1,4 @@
-/**
- * Generates the application icon without any image tooling.
- *
- * Renders the mark with 4x4 supersampled signed-distance math, encodes a PNG
- * (for the repo / docs) and a multi-resolution .ico (for Windows), which is
- * what electron-builder needs for the exe, the installer and the shortcuts.
- */
+// Generates application icon without any image tooling.
 import { deflateSync } from 'node:zlib';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -34,33 +28,26 @@ const inRing = (x, y, cx, cy, inner, outer) => {
   return d >= inner * inner && d <= outer * outer;
 };
 
-/** Renders one RGBA pixel of the mark, coordinates normalised to 0..1. */
 function sample(x, y) {
   if (!inCircle(x, y, 0.5, 0.5, 0.5)) return [0, 0, 0, 0];
 
   const base = mix(ORANGE_TOP, ORANGE_BOTTOM, Math.min(1, Math.max(0, y * 0.85 + 0.1)));
   let colour = base;
 
-  // Body: a crescent tucked under the head, sharing its edge so the two merge.
   if (inRing(x, y, 0.5, 0.44, 0.243, 0.395) && y > 0.6) colour = WHITE;
 
-  // Head.
   if (inCircle(x, y, 0.5, 0.44, 0.245)) colour = WHITE;
 
-  // Eyes.
   if (inCircle(x, y, 0.415, 0.4, 0.052) || inCircle(x, y, 0.585, 0.4, 0.052)) colour = base;
 
-  // Smile: lower half of a ring centred on the mouth.
   if (inRing(x, y, 0.5, 0.44, 0.075, 0.105) && y > 0.45) colour = base;
 
-  // Antenna.
   if (inRing(x, y, 0.5, 0.15, 0.0, 0.03) && y > 0.1) colour = WHITE;
   if (inCircle(x, y, 0.5, 0.09, 0.05)) colour = WHITE;
 
   return [colour[0], colour[1], colour[2], 255];
 }
 
-/** Renders the mark to an RGBA buffer with 4x4 supersampling. */
 function renderRGBA(size) {
   const data = Buffer.alloc(size * size * 4);
   const step = 1 / (size * 4);
@@ -143,7 +130,6 @@ function encodePNG(rgba, size) {
 
 /* -------------------------------------------------------------- ico encoder */
 
-/** 32-bit BGRA DIB entry, bottom-up, with an (unused) 1bpp AND mask. */
 function encodeDIB(rgba, size) {
   const header = Buffer.alloc(40);
   const xorSize = size * size * 4;

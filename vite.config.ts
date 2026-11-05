@@ -7,7 +7,7 @@ const root = resolve(process.cwd());
 
 export default defineConfig({
   root: resolve(root, 'src/renderer'),
-  // Relative asset URLs so the bundle works from the `app://` protocol too.
+  // Relative asset URLs so the bundle works from `app://` protocol too.
   base: './',
   plugins: [react()],
   server: {

@@ -8,7 +8,7 @@ import { buildNode } from './buildNode.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-/** Development launcher: Vite dev server + esbuild watch + Electron. */
+/** Dev launcher: Vite dev server + esbuild watch + Electron. */
 async function main() {
   const server = await createServer({ configFile: resolve(root, 'vite.config.ts') });
   await server.listen();
